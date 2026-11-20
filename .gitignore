@@ -1,0 +1,11 @@
+build/
+papertrail
+papertrail.exe
+*.o
+*.d
+*.exe
+*.out
+fuzz_*.txt
+.vscode/
+.idea/
+.DS_Store
