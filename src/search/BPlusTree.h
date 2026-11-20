@@ -1,5 +1,5 @@
 // Global B+ tree inverted index: token -> sorted posting list (Section 5.7.1).
-// Owner: Ahmad
+// Owner: Hassaan
 #pragma once
 
 #include <string>

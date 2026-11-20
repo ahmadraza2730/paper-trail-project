@@ -1,5 +1,5 @@
 // "similar <k> [percent]": shingles, Bloom estimate vs exact, top-k with a min-heap (Section 5.10).
-// Owner: Hassaan
+// Owner: Ahmad
 #pragma once
 
 #include "engine/Engine.h"

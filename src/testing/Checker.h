@@ -1,6 +1,6 @@
 // Invariant checker (Section 5.12): "check on|off".
-// Hassaan builds the framework; each owner adds checks for their own structures.
-// Owner: framework Hassaan, checks by each owner
+// Ahmad builds the framework; each owner adds checks for their own structures.
+// Owner: framework Ahmad, checks by each owner
 #pragma once
 
 #include <string>

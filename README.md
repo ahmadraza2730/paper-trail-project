@@ -22,14 +22,16 @@ Each person works inside their own folders. Files marked **shared** need a heads
 | `src/foundation/` | Hassaan | Dynamic array, ring queue, stack, hash map, min-heap, sort, hashes, tokenizer, allocation tracker |
 | `src/console/` | Hassaan | Command reading, parsing, scripts, error messages |
 | `src/explorer/` | Hassaan | Folders, files, `ls`, stars, `props`, recycle bin |
-| `src/filters/` | Hassaan | Bloom filters, `fptest`, blocklist, `similar` |
-| `src/testing/` | Hassaan (framework) + everyone (own checks) | Invariant checker, fuzzer |
+| `src/filters/BloomFilter.*`, `Blocklist.*` | Hassaan | Bloom filters, `fptest`, blocklist |
+| `src/filters/Similarity.*` | Ahmad | `similar` |
+| `src/testing/` | Ahmad (framework) + everyone (own checks) | Invariant checker, fuzzer |
 | `src/main.cpp` | Hassaan | Entry point |
 | `src/document/` | Huzaima | AVL tree, document, edits, staging, save, discard |
 | `src/history/CommitDag.*` | Huzaima | Commits, DAG, reference counting |
 | `src/history/Merge.*` | Huzaima | `fork`, `merge` |
 | `src/history/Queries.*` | Ahmad | `log`, `view`, `common` (LCA) |
-| `src/search/` | Ahmad | B+ tree index, `search` |
+| `src/search/BPlusTree.*` | Hassaan | B+ tree index |
+| `src/search/Search.*` | Ahmad | `search` |
 | `src/graph/` | Ahmad | Link and embed graphs |
 | `src/common/Types.h` | **shared** | IDs and the `Op` struct |
 | `src/engine/Engine.*` | **shared** | Global state and the hooks between parts |

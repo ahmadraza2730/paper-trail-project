@@ -1,5 +1,5 @@
 // "search <word>" and "search <prefix>*" (Section 5.7.2).
-// Owner: Ahmad
+// Owner: Ahmad (search command); index in BPlusTree is Hassaan
 #pragma once
 
 #include <string>

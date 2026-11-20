@@ -3,13 +3,15 @@
 **Team:** Hassaan, Ahmad, Huzaima
 **Deadline:** ~7 December
 
+The work is split evenly by effort (amount and difficulty together). Each person has one hard core part plus a share of the easier parts.
+
 ## Day 1 (all three)
 - **Set up the project together and agree on how the pieces will connect:** so all three can start working at the same time.
 
 ---
 
-## Hassaan (~35%, Nov 21–30)
-**Why Hassaan:** these are the basic building blocks everyone else needs, so they have to be done first. He finishes early, and nobody is left waiting on him.
+## Hassaan (~33%, Nov 21–30)
+**Why Hassaan:** the basic building blocks everyone needs, so they come first, plus the search index as his hard part. All of it can be finished without waiting on anyone.
 
 | Part | What it is | Why it's his |
 |---|---|---|
@@ -20,22 +22,22 @@
 | Recycle bin | Deleting and restoring files | Part of folders and files |
 | Bloom filter + experiment | A quick "is this word here?" checker, plus the test for the report | Small and separate; report part can be done early |
 | Blocked words | Warning when someone types a banned word | Uses his Bloom filter |
-| Similarity check | Finding documents that copy each other | Uses only his own pieces |
-| Test scripts | Turning the PDF examples into tests | Gives the team ready-made tests for the end |
-| Testing tools setup | The base for the error checker and random tester | Others just add their own checks |
+| Search index (B+ tree) | Stores every word so search is fast | His hard part; completely separate, needs no one else's code |
 
 ---
 
-## Ahmad (~32%)
-**Why Ahmad:** search, links between documents and history all involve walking through connected data, so they fit together.
+## Ahmad (~33%)
+**Why Ahmad:** search, links between documents and history all involve walking through connected data, so they fit together. He also sets up the testing tools, since he'll be there for the final testing.
 
 | Part | What it is | Why it's his |
 |---|---|---|
-| Search index | Stores every word so search is fast | Big, separate, can start on day 1 |
-| Search | Finding words across all documents | Built on his index |
-| Links | Which documents point to which | Connected-data work |
+| Search | Finding words across all documents | Uses Hassaan's search index |
+| Links | Which documents point to which | His hard part; connected-data work |
 | Embeds | One document showing inside another, without loops | Same idea as links |
 | History | Viewing old versions and finding where two versions split | Same kind of work as links |
+| Similarity check | Finding documents that copy each other | Fits with search; uses the shared building blocks |
+| Test scripts | Turning the PDF examples into tests | Used in the final testing he'll be part of |
+| Testing tools setup | The base for the error checker and random tester | Same reason |
 | His tests | Checks for his own parts | He knows them best |
 | Final joining (half) | Putting everything together, fixing bugs | Shared at the end |
 
@@ -51,7 +53,7 @@
 | Save and undo | Saving changes as a version, or throwing them away | Built from his edits |
 | Version history | Keeping track of all saved versions | Saving creates versions |
 | Fork | Copying a document into a separate branch | Copies his document text |
-| Merge | Combining two branches and handling clashes | The hardest part; needs all his pieces |
+| Merge | Combining two branches and handling clashes | His hard part; needs all his pieces |
 | His tests | Checks for his own parts | He knows them best |
 | Final joining (half) | Putting everything together, fixing bugs | Shared at the end |
 

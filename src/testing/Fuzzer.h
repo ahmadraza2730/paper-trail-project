@@ -1,6 +1,6 @@
 // Seeded fuzzer (Section 5.12): "fuzz <seed> <count>".
 // Generator: state = (state * 1103515245 + 12345) mod 2^31.
-// Owner: framework Hassaan, command generators by each owner
+// Owner: framework Ahmad, command generators by each owner
 #pragma once
 
 #include <cstdint>
