@@ -2,10 +2,11 @@
 
 using namespace std;
 
+//for int
 unsigned int hashInt(unsigned int id) {
     return id * 2654435761u;
 }
-
+//for string
 unsigned int fnv1a(const string& text) {
     unsigned int h = 2166136261u;
     for (int i = 0; i < (int)text.length(); i++) {
