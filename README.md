@@ -37,7 +37,7 @@ Each person works inside their own folders. Files marked **shared** need a heads
 | `src/engine/Engine.*` | **shared** | Global state and the hooks between parts |
 | `tests/` | everyone | Test scripts and expected output |
 
-The headers contain **proposed** function signatures. Agree on them together on day 1, then change them freely inside your own folders.
+The source files start empty. Agree on function signatures together on day 1, then change them freely inside your own folders.
 
 ## How we work
 
