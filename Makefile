@@ -4,6 +4,7 @@
 
 CXX      := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic -Werror -g -Isrc
+LDFLAGS  := -static-libstdc++ -static-libgcc
 TARGET   := papertrail
 
 SRCS := $(shell find src -name '*.cpp')
@@ -12,7 +13,7 @@ OBJS := $(patsubst src/%.cpp,build/%.o,$(SRCS))
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 build/%.o: src/%.cpp
 	@mkdir -p $(dir $@)
