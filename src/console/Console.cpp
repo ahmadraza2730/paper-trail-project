@@ -131,10 +131,11 @@ static bool isBlank(const string& line) {
 
 Console::Console() {
     running = true;
+    ticks = 0;
 }
 
 string Console::prompt() {
-    return "root $ ";
+    return explorer.breadcrumb() + " $ ";
 }
 
 bool Console::split(const string& line, DynArray<string>& words, DynArray<bool>& quoted) {
@@ -188,6 +189,10 @@ bool Console::split(const string& line, DynArray<string>& words, DynArray<bool>&
 }
 
 void Console::handle(const string& line) {
+    if (isBlank(line)) {
+        return;
+    }
+    ticks++;
     DynArray<string> words;
     DynArray<bool> quoted;
     if (!split(line, words, quoted)) {
@@ -205,6 +210,41 @@ void Console::handle(const string& line) {
     }
     else if (command == "run") {
         runScript(words.get(1));
+    }
+    else if (command == "cd") {
+        explorer.cd(words.get(1));
+    }
+    else if (command == "pwd") {
+        explorer.pwd();
+    }
+    else if (command == "mkdir") {
+        explorer.mkdir(words.get(1));
+    }
+    else if (command == "new") {
+        explorer.newFile(words.get(1), ticks);
+    }
+    else if (command == "star") {
+        explorer.star(words.get(1), true);
+    }
+    else if (command == "unstar") {
+        explorer.star(words.get(1), false);
+    }
+    else if (command == "ls") {
+        string key = "name";
+        string order = "asc";
+        if (words.size() > 1) {
+            key = words.get(1);
+        }
+        if (words.size() > 2) {
+            order = words.get(2);
+        }
+        explorer.ls(key, order);
+    }
+    else if (command == "props") {
+        explorer.props(words.get(1));
+    }
+    else if (command == "open") {
+        explorer.open(words.get(1));
     }
 }
 
