@@ -1,6 +1,8 @@
 #include "console/Console.h"
+#include "filters/BloomFilter.h"
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -245,6 +247,31 @@ void Console::handle(const string& line) {
     }
     else if (command == "open") {
         explorer.open(words.get(1));
+    }
+    else if (command == "block") {
+        blocklist.block(words.get(1));
+    }
+    else if (command == "unblock") {
+        blocklist.unblock(words.get(1));
+    }
+    else if (command == "blocked") {
+        blocklist.printBlocked();
+    }
+    else if (command == "fptest") {
+        string type = words.get(1);
+        int m = atoi(words.get(2).c_str());
+        int k = atoi(words.get(3).c_str());
+        int n = atoi(words.get(4).c_str());
+        if ((type != "bloom" && type != "counting") || m <= 0 || k <= 0 || n < 0) {
+            cout << "error: usage: fptest <bloom|counting> <m> <k> <n>" << endl;
+        }
+        else if (type == "bloom") {
+            fpTestBloom(m, k, n);
+        }
+        else {
+            Blocklist test(m, k);
+            test.runFpTest(n);
+        }
     }
 }
 
