@@ -248,6 +248,18 @@ void Console::handle(const string& line) {
     else if (command == "open") {
         explorer.open(words.get(1));
     }
+    else if (command == "rm") {
+        explorer.rm(words.get(1));
+    }
+    else if (command == "bin") {
+        explorer.showBin();
+    }
+    else if (command == "restore") {
+        explorer.restore(words.get(1));
+    }
+    else if (command == "emptybin") {
+        explorer.emptyBin();
+    }
     else if (command == "block") {
         blocklist.block(words.get(1));
     }

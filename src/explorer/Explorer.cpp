@@ -15,15 +15,28 @@ Explorer::Explorer() {
     root->size = 0;
     root->modified = 0;
     root->starred = false;
+    root->binNumber = 0;
+    bin = new Node;
+    bin->name = "Recycle Bin";
+    bin->isFolder = true;
+    bin->parent = nullptr;
+    bin->fileId = 0;
+    bin->lines = 0;
+    bin->size = 0;
+    bin->modified = 0;
+    bin->starred = false;
+    bin->binNumber = 0;
     current = root;
     openDoc = nullptr;
     paths.put("/", root);
     nextFileId = 1;
     documentCount = 0;
+    nextBinNumber = 1;
 }
 
 Explorer::~Explorer() {
     freeNode(root);
+    freeNode(bin);
 }
 
 void Explorer::freeNode(Node* node) {
@@ -169,6 +182,7 @@ Node* Explorer::addNode(const string& name, bool isFolder) {
     node->size = 0;
     node->modified = 0;
     node->starred = false;
+    node->binNumber = 0;
     current->children.add(node);
     paths.put(fullPath(node), node);
     return node;
@@ -348,4 +362,165 @@ bool Explorer::open(const string& name) {
     }
     openDoc = node;
     return true;
+}
+
+void Explorer::removeChild(Node* folder, Node* child) {
+    int index = 0;
+    while (folder->children.get(index) != child) {
+        index++;
+    }
+    for (int i = index; i < folder->children.size() - 1; i++) {
+        folder->children.set(i, folder->children.get(i + 1));
+    }
+    folder->children.remove();
+}
+
+void Explorer::removePaths(Node* node) {
+    paths.remove(fullPath(node));
+    for (int i = 0; i < node->children.size(); i++) {
+        removePaths(node->children.get(i));
+    }
+}
+
+int Explorer::countDocuments(Node* node) {
+    if (!node->isFolder) {
+        return 1;
+    }
+    int count = 0;
+    for (int i = 0; i < node->children.size(); i++) {
+        count += countDocuments(node->children.get(i));
+    }
+    return count;
+}
+
+bool Explorer::rm(const string& name) {
+    Node* node = findChild(current, name);
+    if (node == nullptr) {
+        cout << "error: " << name << " does not exist" << endl;
+        return false;
+    }
+    if (openDoc == node) {
+        openDoc = nullptr;
+    }
+    removePaths(node);
+    removeChild(current, node);
+    node->fromPath = fullPath(current);
+    node->binNumber = nextBinNumber;
+    nextBinNumber++;
+    node->parent = bin;
+    bin->children.add(node);
+    cout << "moved " << name;
+    if (node->isFolder) {
+        cout << "/";
+    }
+    cout << " to the recycle bin as item " << node->binNumber << endl;
+    return true;
+}
+
+void Explorer::showBin() {
+    if (bin->children.isEmpty()) {
+        cout << "the bin is empty" << endl;
+        return;
+    }
+    for (int i = 0; i < bin->children.size(); i++) {
+        Node* node = bin->children.get(i);
+        cout << node->binNumber << " " << node->name;
+        if (node->isFolder) {
+            cout << "/";
+        }
+        cout << " from " << node->fromPath;
+        if (node->isFolder) {
+            int count = countDocuments(node);
+            if (count == 1) {
+                cout << " (1 document)";
+            }
+            else {
+                cout << " (" << count << " documents)";
+            }
+        }
+        cout << endl;
+    }
+}
+
+void Explorer::addPaths(Node* node) {
+    paths.put(fullPath(node), node);
+    for (int i = 0; i < node->children.size(); i++) {
+        addPaths(node->children.get(i));
+    }
+}
+
+string Explorer::restoredName(const string& name) {
+    int dot = (int)name.rfind('.');
+    if (dot < 0) {
+        return name + "_restored";
+    }
+    return name.substr(0, dot) + "_restored" + name.substr(dot);
+}
+
+bool Explorer::restore(const string& number) {
+    Node* node = nullptr;
+    for (int i = 0; i < bin->children.size(); i++) {
+        if (to_string(bin->children.get(i)->binNumber) == number) {
+            node = bin->children.get(i);
+        }
+    }
+    if (node == nullptr) {
+        cout << "error: the bin has no item " << number << endl;
+        return false;
+    }
+    Node* target = root;
+    bool available = false;
+    if (paths.contains(node->fromPath) && paths.get(node->fromPath)->isFolder) {
+        target = paths.get(node->fromPath);
+        available = true;
+    }
+    string oldName = node->name;
+    bool taken = false;
+    while (findChild(target, node->name) != nullptr) {
+        node->name = restoredName(node->name);
+        taken = true;
+    }
+    removeChild(bin, node);
+    node->parent = target;
+    node->binNumber = 0;
+    target->children.add(node);
+    addPaths(node);
+    cout << "restored " << fullPath(node);
+    if (!available && taken) {
+        cout << " (its folder is not available; " << oldName << " was taken)";
+    }
+    else if (!available) {
+        cout << " (its folder " << node->fromPath << " is not available)";
+    }
+    else if (taken) {
+        cout << " (" << oldName << " was taken)";
+    }
+    cout << endl;
+    return true;
+}
+
+void Explorer::emptyBin() {
+    int items = bin->children.size();
+    int documents = 0;
+    for (int i = 0; i < items; i++) {
+        documents += countDocuments(bin->children.get(i));
+        freeNode(bin->children.get(i));
+    }
+    bin->children.clear();
+    documentCount -= documents;
+    cout << "emptied the bin: " << items;
+    if (items == 1) {
+        cout << " item";
+    }
+    else {
+        cout << " items";
+    }
+    cout << " deleted permanently, " << documents;
+    if (documents == 1) {
+        cout << " document";
+    }
+    else {
+        cout << " documents";
+    }
+    cout << " freed" << endl;
 }

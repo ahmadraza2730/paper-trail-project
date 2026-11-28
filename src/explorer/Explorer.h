@@ -14,6 +14,8 @@ struct Node {
     int size;
     int modified;
     bool starred;
+    int binNumber;
+    std::string fromPath;
 };
 
 class Explorer {
@@ -21,12 +23,19 @@ private:
     Node* root;
     Node* current;
     Node* openDoc;
+    Node* bin;
     HashMap<std::string, Node*> paths;
     int nextFileId;
     int documentCount;
+    int nextBinNumber;
     void freeNode(Node* node);
     bool validName(const std::string& name);
     Node* addNode(const std::string& name, bool isFolder);
+    void removeChild(Node* folder, Node* child);
+    void removePaths(Node* node);
+    int countDocuments(Node* node);
+    void addPaths(Node* node);
+    std::string restoredName(const std::string& name);
 
 public:
     Explorer();
@@ -42,4 +51,8 @@ public:
     bool ls(const std::string& key, const std::string& order);
     bool props(const std::string& name);
     bool open(const std::string& name);
+    bool rm(const std::string& name);
+    void showBin();
+    bool restore(const std::string& number);
+    void emptyBin();
 };
